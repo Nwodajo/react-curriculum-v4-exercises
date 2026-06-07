@@ -98,13 +98,75 @@ export function QuestionItem({ question }) {
       {question.type === QUESTION_TYPES.MULTIPLE_CHOICE && (
         <div className={styles['options-section']}>
           <h4>Answer Options:</h4>
+
           <ul>
             {question.options.map((option, index) => (
               <li key={index} className={styles['option-item']}>
                 <span className={styles['option-text']}>{option}</span>
+
+                {isEditing && (
+                  <>
+                    <button
+                      onClick={() => {
+                        const newText = window.prompt(
+                          'Edit option text',
+                          option
+                        );
+
+                        if (newText) {
+                          dispatch({
+                            type: 'UPDATE_OPTION_TEXT',
+                            payload: {
+                              questionId: question.id,
+                              optionIndex: index,
+                              newText,
+                            },
+                          });
+                        }
+                      }}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      disabled={question.options.length <= 2}
+                      onClick={() =>
+                        dispatch({
+                          type: 'DELETE_OPTION_FROM_QUESTION',
+                          payload: {
+                            questionId: question.id,
+                            optionIndex: index,
+                          },
+                        })
+                      }
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
               </li>
             ))}
           </ul>
+
+          {isEditing && (
+            <button
+              onClick={() => {
+                const optionText = window.prompt('Enter new option');
+
+                if (optionText) {
+                  dispatch({
+                    type: 'ADD_OPTION_TO_QUESTION',
+                    payload: {
+                      questionId: question.id,
+                      optionText,
+                    },
+                  });
+                }
+              }}
+            >
+              + Add Option
+            </button>
+          )}
         </div>
       )}
     </div>

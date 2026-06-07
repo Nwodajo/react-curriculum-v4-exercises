@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
+
+import Home from './pages/Home.jsx';
+import Checkout from './pages/Checkout.jsx';
+import ProductDetails from './pages/ProductDetails.jsx';
+import Account from './pages/Account.jsx';
+import NotFound from './pages/NotFound.jsx';
+
+import productsData from './data/products.js';
 
 export default function StudentWork() {
   const [user, setUser] = useState({
@@ -12,6 +21,7 @@ export default function StudentWork() {
   function toggleLogin() {
     setUser((u) => ({ ...u, isLoggedIn: !u.isLoggedIn }));
   }
+  const [products] = useState(productsData);
 
   return (
     <div
@@ -39,7 +49,24 @@ export default function StudentWork() {
 
       <Header user={user} />
 
-      <main style={{ padding: 12 }}></main>
+      <main style={{ padding: 12 }}>
+        <Routes>
+          <Route path="/" element={<Home products={products} />} />
+
+          <Route path="/checkout" element={<Checkout />} />
+
+          <Route
+            path="/products/:id"
+            element={<ProductDetails products={products} />}
+          />
+
+          {user.isLoggedIn && (
+            <Route path="/account" element={<Account user={user} />} />
+          )}
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
 
       <Footer />
     </div>
