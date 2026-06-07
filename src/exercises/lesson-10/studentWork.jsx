@@ -10,7 +10,7 @@ import ProductDetails from './pages/ProductDetails.jsx';
 import Account from './pages/Account.jsx';
 import NotFound from './pages/NotFound.jsx';
 
-import productsData from './data/products.js';
+import { products } from './data/products';
 
 export default function StudentWork() {
   const [user, setUser] = useState({
@@ -19,9 +19,11 @@ export default function StudentWork() {
   });
 
   function toggleLogin() {
-    setUser((u) => ({ ...u, isLoggedIn: !u.isLoggedIn }));
+    setUser((u) => ({
+      ...u,
+      isLoggedIn: !u.isLoggedIn,
+    }));
   }
-  const [products] = useState(productsData);
 
   return (
     <div
@@ -40,10 +42,14 @@ export default function StudentWork() {
         }}
       >
         <h3 style={{ marginTop: 0 }}>Debug Panel</h3>
+
         <p>
           Toggle login to test protected routing behavior. When logged out,
-          typing <code>/account</code> should NOT show Account.
+          typing
+          <code> /account </code>
+          should NOT show Account.
         </p>
+
         <button onClick={toggleLogin}>Toggle Logged In</button>
       </aside>
 
@@ -51,17 +57,17 @@ export default function StudentWork() {
 
       <main style={{ padding: 12 }}>
         <Routes>
-          <Route path="/" element={<Home products={products} />} />
+          <Route index element={<Home products={products} />} />
 
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="checkout" element={<Checkout />} />
 
           <Route
-            path="/products/:id"
+            path="products/:id"
             element={<ProductDetails products={products} />}
           />
 
           {user.isLoggedIn && (
-            <Route path="/account" element={<Account user={user} />} />
+            <Route path="account" element={<Account user={user} />} />
           )}
 
           <Route path="*" element={<NotFound />} />

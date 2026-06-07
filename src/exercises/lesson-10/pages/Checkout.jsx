@@ -4,7 +4,7 @@ export default function Checkout() {
   const navigate = useNavigate();
 
   function handleGoHome() {
-    navigate('/');
+    navigate('/lessons/lesson-10');
   }
 
   function handleBack() {
@@ -21,7 +21,6 @@ export default function Checkout() {
 
       <div style={{ display: 'flex', gap: 10 }}>
         <button onClick={handleGoHome}>Go Home (navigate)</button>
-
         <button onClick={handleBack}>Back (navigate -1)</button>
       </div>
     </section>
